@@ -9,7 +9,7 @@ I will add the video link here when it's saved
 During the presentation, I (secfurry) explore the methods and function calls used to spoof parent process relationships in Windows and inject shellcode into Windows applications.
 I cover many undocumented or lesser known functions and provide code (saved here) to experiment and modify as you see fit.
 
-I can be reached out on Twitter at [@secfurry](https://twitter.com/secfurry).
+I can be reached on Twitter at [@secfurry](https://twitter.com/secfurry).
 
 PS: The code used in this presentation was given to one of my friends [@iDigitalFlame](https://twitter.com/iDigitalFlame) to use in development for his [malware framework XMT](https://github.com/iDigitalFlame/xmt), go check it out if you're interested in more cool stuff like this.
 
@@ -18,10 +18,10 @@ PS: The code used in this presentation was given to one of my friends [@iDigital
 - [Zw and Nt Prefixes](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/what-does-the-zw-prefix-mean-)
 - [PEB Block Overwriting](https://blog.xpnsec.com/how-to-argue-like-cobalt-strike/)
 - [StartupInfoEx](https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-startupinfoexa)
-- [Detecting Parent Process Spoofing](https://blog.f-secure.com/detecting-parent-pid-spoofing/)
-    [Git Repo](https://github.com/countercept/ppid-spoofing)
+- [Detecting Parent Process Spoofing](https://blog.f-secure.com/detecting-parent-pid-spoofing/) ([Git Repo](https://github.com/countercept/ppid-spoofing))
 - [Preventing Parent Process Spoofing](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute#remarks)
 - [Another Writeup on Parent Spoofing](https://blog.didierstevens.com/2009/11/22/quickpost-selectmyparent-or-playing-with-the-windows-process-tree/)
+- [Parent Process Spoofing Office Macro](https://github.com/christophetd/spoofing-office-macro)
 
 ### Windows API Function Reference
 
@@ -38,4 +38,4 @@ PS: The code used in this presentation was given to one of my friends [@iDigital
 - [NtWriteVirtualMemory](http://www.codewarrior.cn/ntdoc/winnt/mm/NtWriteVirtualMemory.htm)
 - [NtCreateThreadEx](https://securityxploded.com/ntcreatethreadex.php)
 
-Updated on *08/06/2020*
+Updated on *08/07/2020*

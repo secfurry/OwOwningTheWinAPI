@@ -1,9 +1,24 @@
 // +build windows
-// ONLY build for Windows platforms
+
+// Build only for Windows
 //
-// Windows parent process spoofing Golang code example.
+// Copyright (C) 2020 secfurry
 //
-// Once compiled, use the command line to target a process by PID and which command to run.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+// Parent Process Spoofing Example
+//   Attempts to run the supplied command under the targeted process ID.
 package main
 
 import (
@@ -99,14 +114,14 @@ func main() {
 	//
 	// MSDoc https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-initializeprocthreadattributelist
 	//
-	r, _, err := funcInitializeProcThreadAttributeList.Call(
+	initResult, _, err := funcInitializeProcThreadAttributeList.Call(
 		uintptr(unsafe.Pointer(startupInfoExtended.AttributeList)), // Pointer to the LPPROC_THREAD_ATTRIBUTE_LIST blob
 		1,                              // Amount of attributes requested
 		0,                              // Reserved, must be zero
 		uintptr(unsafe.Pointer(&size)), // Pointer to UINT64 to store the size of memory that was written
 	)
 
-	if r == 0 {
+	if initResult == 0 {
 		panic("InitializeProcThreadAttributeList failed: " + err.Error())
 	}
 
@@ -114,7 +129,7 @@ func main() {
 	//
 	// MSDoc https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute
 	//
-	r, _, err = funcUpdateProcThreadAttribute.Call(
+	updateResult, _, err := funcUpdateProcThreadAttribute.Call(
 		uintptr(unsafe.Pointer(startupInfoExtended.AttributeList)), // Pointer to the LPPROC_THREAD_ATTRIBUTE_LIST blob
 		0,                                      // Reserved, must be zero
 		0x00020000,                             // PROC_THREAD_ATTRIBUTE_PARENT_PROCESS constant
@@ -124,7 +139,7 @@ func main() {
 		uintptr(unsafe.Pointer(nil)),           // Pointer the size to previous value, we can ignore it
 	)
 
-	if r == 0 {
+	if updateResult == 0 {
 		panic("UpdateProcThreadAttribute failed: " + err.Error())
 	}
 
@@ -147,7 +162,7 @@ func main() {
 	//
 	// The CREATE_NEW_CONSOLE flag is REQUIRED when attempting to spoof a parent process as the parent may not have
 	// an allocated coonsole for useage, which would cause the process to crash if it requires one.
-	r, _, err = funcCreateProcess.Call(
+	execResult, _, err := funcCreateProcess.Call(
 		uintptr(unsafe.Pointer(nil)),                   // Application name pointer, can be NULL
 		uintptr(unsafe.Pointer(commandPtr)),            // Command line pointer
 		uintptr(unsafe.Pointer(nil)),                   // Process SECURITY_ATTRIBUTES, can be NULL
@@ -160,7 +175,7 @@ func main() {
 		uintptr(unsafe.Pointer(&procInfo)),             // Pointer to our PROCESS_INFORMATION struct
 	)
 
-	if r == 0 {
+	if execResult == 0 {
 		panic("CreateProcess failed: " + err.Error())
 	}
 

