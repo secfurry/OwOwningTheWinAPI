@@ -73,6 +73,7 @@ func main() {
 		targetPID, _ = strconv.Atoi(os.Args[1])
 
 		// Link and load kernel32.dll
+		// kernel32.dll contains the functions we need.
 		dllKernel32 = windows.NewLazySystemDLL("kernel32.dll")
 
 		// Load the functions from kernel32.dll that we need by name.
@@ -220,8 +221,8 @@ func main() {
 		0x00020000,                             // PROC_THREAD_ATTRIBUTE_PARENT_PROCESS constant
 		uintptr(unsafe.Pointer(&targetHandle)), // Pointer to HANDLE of the target process
 		uintptr(unsafe.Sizeof(targetHandle)),   // Size of the HANDLE
-		uintptr(unsafe.Pointer(nil)),           // Pointer to previous value, we can ignore it
-		uintptr(unsafe.Pointer(nil)),           // Pointer the size to previous value, we can ignore it
+		0,                                      // Pointer to previous value, we can ignore it
+		0,                                      // Pointer the size to previous value, we can ignore it
 	)
 
 	if updateResult == 0 {
@@ -293,16 +294,16 @@ func main() {
 	// The CREATE_NEW_CONSOLE flag is REQUIRED when attempting to spoof a parent process as the parent may not have
 	// an allocated coonsole for useage, which would cause the process to crash if it requires one.
 	execResult, _, err := funcCreateProcess.Call(
-		uintptr(unsafe.Pointer(nil)),                   // Application name pointer, can be NULL
-		uintptr(unsafe.Pointer(commandPtr)),            // Command line pointer
-		uintptr(unsafe.Pointer(nil)),                   // Process SECURITY_ATTRIBUTES, can be NULL
-		uintptr(unsafe.Pointer(nil)),                   // Thread SECURITY_ATTRIBUTES, can be NULL
-		uintptr(1),                                     // Inherit Handles, set to true
+		0,                                   // Application name pointer, can be NULL
+		uintptr(unsafe.Pointer(commandPtr)), // Command line pointer
+		0,                                   // Process SECURITY_ATTRIBUTES, can be NULL
+		0,                                   // Thread SECURITY_ATTRIBUTES, can be NULL
+		uintptr(1),                          // Inherit Handles, set to true
 		uintptr(0x00080000|windows.CREATE_NEW_CONSOLE), // Process creation flags, the EXTENDED_STARTUPINFO_PRESENT (0x00080000) flag is required
-		uintptr(unsafe.Pointer(nil)),                   // Environment Block, can be NULL
-		uintptr(unsafe.Pointer(nil)),                   // Current working directory, can be NULL
-		uintptr(unsafe.Pointer(&startupInfoExtended)),  // Pointer to our STARTUPINFOEX struct
-		uintptr(unsafe.Pointer(&procInfo)),             // Pointer to our PROCESS_INFORMATION struct
+		0, // Environment Block, can be NULL
+		0, // Current working directory, can be NULL
+		uintptr(unsafe.Pointer(&startupInfoExtended)), // Pointer to our STARTUPINFOEX struct
+		uintptr(unsafe.Pointer(&procInfo)),            // Pointer to our PROCESS_INFORMATION struct
 	)
 
 	if execResult == 0 {

