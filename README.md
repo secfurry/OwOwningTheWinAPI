@@ -2,7 +2,7 @@
 
 I will add the video link here when it's saved
 
-[PowerPoint Here](https://dij.sh/owo/Slides.pdf)
+[PowerPoint Here](https://github.com/secfurry/OwOwningTheWinAPI/raw/master/Slides.pdf)
 
 **OwOwning with the Windows API** is a presentation given during the [DEFCON Furs 2020](https://2020.dcfurs.com) virtual conference.
 
