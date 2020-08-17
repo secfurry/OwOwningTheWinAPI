@@ -1,6 +1,6 @@
 # OwOwning with the Windows API
 
-I will add the video link here when it's saved
+[Video Link Here](https://www.youtube.com/watch?v=EUk0uYNnwVQ&list=PLedb-35PnZfH3ZhmpZEx-6kloE_E7bq0a&index=4&t=0s)
 
 [PowerPoint Here](https://github.com/secfurry/OwOwningTheWinAPI/raw/master/Slides.pdf)
 
