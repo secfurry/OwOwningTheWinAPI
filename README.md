@@ -1,7 +1,5 @@
 # OwOwning with the Windows API
 
-[Video Link Here](https://www.youtube.com/watch?v=EUk0uYNnwVQ&list=PLedb-35PnZfH3ZhmpZEx-6kloE_E7bq0a&index=4&t=0s)
-
 [PowerPoint Here](https://github.com/secfurry/OwOwningTheWinAPI/raw/master/Slides.pdf)
 
 **OwOwning with the Windows API** is a presentation given during the [DEFCON Furs 2020](https://2020.dcfurs.com) virtual conference.
